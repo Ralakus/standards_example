@@ -1,0 +1,204 @@
+Class:
+    name: Shape
+    file_location: example.py
+    description: Base class for all shapes in program, base class for circle, square, and rectangle
+
+    InstanceVariable:
+        name: IV_type
+        type: String
+        description: Stores the name of the super class that inherits this class to identify what class it is. All lower case letters. `Circle` class sets value to "circle", `Squre` class sets value to "square", and `Rectangle` class sets value to "rectangle"
+
+    InstanceVariable:
+        name: IV_colour
+        type: String
+        description: Stores name of color as a string. Value will always be lowercase and the only valid colours are, Red -> "red", Green -> "green", Blue -> "blue". This value behaves the same with all super classes
+
+    InstanceVariable:
+        name: IV_size
+        type: Dictionary
+        description: Stores sizes of the super shape class. It is a dictionary with keys relating to the super class. Such as "radius" for `Circle` class, "length" for `Square` class, and "width" and "height" for `Rectangle` class
+    
+        DictionaryKeyOrListIndex:
+            name: radius
+            type: Float
+            description: Only present when `Circle` is the super class. Used in the `Circle` class to calcuate its area
+
+        DictionaryKeyOrListIndex:
+            name: length
+            type: Float
+            description: Only present when `Square` is the super class. Used in the `Square` class to calcuate its area
+        
+        DictionaryKeyOrListIndex:
+            name: width
+            type: Float
+            description: Only present when `Rectangle` is the super class. Used in the `Square` class with "height" key to calcuate its area
+
+        DictionaryKeyOrListIndex:
+            name: height
+            type: Float
+            description: Only present when `Rectangle` is the super class. Used in the `Rectangle` class with "width" key to calcuate its area
+
+    Function:
+        name: setColour
+        description: Sets IV_colour of the shape and any super classes. Behaves the same throughout every super class
+
+        FunctionArgument:
+            name: colour
+            type: String
+            is_required: true
+            description: A string that IV_colour is set to in the function
+
+    Function:
+        name: getColour
+        description: Returns IV_colour of the shape. Behaves the same throughout every super class
+
+        NonStandardReturnKey:
+            name: colour
+            type: String
+            description: A copy of IV_colour from the shape
+
+    Function:
+        name: setShapeType
+        description: Sets IV_type of the shape. Behaves the same throughout every super class
+
+        FunctionArgument:
+            name: shape_type
+            type: String
+            is_required: true
+            description: A string that IV_type is set to in the function
+
+    Function:
+        name: getShapeType
+        description: Returns IV_type of the shape. Behaves the same throughout every super class
+
+        NonStandardReturnKey:
+            name: type
+            type: String
+            is_required: true
+            description: A copy of IV_type from the shape
+
+    Function:
+        name: calcuateArea
+        description: This method must be overwritten in super classes. Otherwise this function will fail and return an error stating that this function has not been overwritten
+
+
+Class:
+    name: Circle
+    inherits: Shape
+    file_location: example.py
+    description: Inherits from `Shape` class and does the area calculations for circles
+
+    Function:
+        name: setRadius
+        description: Sets "radius" key in IV_size to input value, affects result of function `calcuateArea`
+
+        FunctionArgument:
+            name: radius
+            type: Float
+            is_required: true
+            description: "radius" key in IV_size is set to this value
+
+    Function:
+        name: getRadius
+        description: Returns "radius" key in IV_size
+
+        NonStandardReturnKey:
+            name: radius
+            type: Float
+            description: A copy of the "radius" key from IV_size
+
+    Function:
+        name: calcuateArea
+        description: Overwrites `calcuateArea` from base `Shape` class, returns area of circle using "radius" key from IV_size
+
+        NonStandardReturnKey:
+            name: area
+            type: Float
+            description: A value that equals Pi * ("radius" key from IV_size) ^ 2
+
+Class:
+    name: Square
+    inherits: Shape
+    file_location: example.py
+    description: Inherits from `Shape` class and does the area calculations for squares
+
+    Function:
+        name: setLength
+        description: Sets "length" key in IV_size to input value, affects result of function `calcuateArea`
+
+        FunctionArgument:
+            name: length
+            type: Float
+            is_required: true
+            description: "length" key in IV_size is set to this value
+
+    Function:
+        name: getLength
+        description: Returns "length" key from IV_size
+
+        NonStandardReturnKey:
+            name: length
+            type: Float
+            description: A copy of "length" key from IV_size
+
+    Function:
+        name: calcuateArea
+        description: Overwrites `calcuateArea` from base `Shape` class, returns area of square using "length" key from IV_size
+
+        NonStandardReturnKey:
+            name: area
+            type: Float
+            description: A value that equals ("length" key from IV_size) ^ 2
+
+Class:
+    name: Rectangle
+    inherits: Shape
+    file_location: example.py
+    description: Inherits from `Shape` class and does the area calculations for rectangles
+
+    Function:
+        name: setWidth
+        description: Sets "width" key in IV_size to input value, affects result of function `calcuateArea`
+
+        FunctionArgument:
+            name: width
+            type: Float
+            is_required: true
+            description: "width" key in IV_size is set to this value
+
+    Function:
+        name: getWidth
+        description: Returns "width" key from IV_size
+
+        NonStandardReturnKey:
+            name: width
+            type: Float
+            description: A copy of "width" key from IV_size
+
+    Function:
+        name: setHeight
+        description: Sets "height" key in IV_size to input value, affects result of function `calcuateArea`
+
+        FunctionArgument:
+            name: height
+            type: Float
+            is_required: true
+            description: "height" key in IV_size is set to this value
+
+    Function:
+        name: getHeight
+        description: Returns "height" key from IV_size
+
+        NonStandardReturnKey:
+            name: height
+            type: Float
+            description: A copy of "height" key from IV_size
+
+    Function:
+        name: calcuateArea
+        description: Overwrites `calcuateArea` from base `Shape` class, returns area of rectangle using "width" and "height" keys from IV_size
+
+        NonStandardReturnKey:
+            name: area
+            type: Float
+            description: A value that equals ("width" key from IV_size) * ("height" key from IV_size)

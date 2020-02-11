@@ -1,30 +1,35 @@
 Class:
-    class_name: <String>
+    name: <String>
     inherits: <Class>
     file_location: <String>
     description: <String>
 
     InstanceVariable:
-        instance_variable_name: <String>
+        name: <String>
         type: <Type>
         description: <String>
 
     ClassVariable:
-        class_variable_name: <String>
+        name: <String>
         type: <Type>
         description: <String>
 
 Function:
-    function_name: <String>
+    name: <String>
     description: <String>
 
     FunctionArgument:
-        argument_name: <String>
+        name: <String>
         type: <Type>
         is_required: <Boolean>
         description: <String>
 
     NonStandardReturnKey:
-        key: <String>
+        name: <String>
         type: <Type>
         description: <String>
+
+DictionaryKeyOrListIndex:
+    name: <String>
+    type: <Type>
+    description: <String>
