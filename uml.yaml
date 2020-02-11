@@ -1,6 +1,6 @@
 Class:
     name: Shape
-    file_location: example.py
+    file_location: shapes.py
     description: Base class for all shapes in program, base class for circle, square, and rectangle
 
     InstanceVariable:
@@ -85,7 +85,7 @@ Class:
 Class:
     name: Circle
     inherits: Shape
-    file_location: example.py
+    file_location: shapes.py
     description: Inherits from `Shape` class and does the area calculations for circles
 
     Function:
@@ -119,7 +119,7 @@ Class:
 Class:
     name: Square
     inherits: Shape
-    file_location: example.py
+    file_location: shapes.py
     description: Inherits from `Shape` class and does the area calculations for squares
 
     Function:
@@ -153,7 +153,7 @@ Class:
 Class:
     name: Rectangle
     inherits: Shape
-    file_location: example.py
+    file_location: shapes.py
     description: Inherits from `Shape` class and does the area calculations for rectangles
 
     Function:
@@ -202,3 +202,64 @@ Class:
             name: area
             type: Float
             description: A value that equals ("width" key from IV_size) * ("height" key from IV_size)
+
+Class:
+    name: ShapeManager
+    file_location: shapes.py
+    description: A wrapper class to manage all super classes based on the `Shape` class, `Circle`, `Square`, and `Rectangle` classes
+
+    Function:
+        name: getCircleArea
+        description: Returns the area of a circle of a given radius
+
+        FunctionArgument:
+            name: radius
+            type: Float
+            is_required: true
+            description: Value to calcuate circle area from, passed to "radius" argument to function `calcuateArea` in `Circle` object
+
+        NonStandardReturnKey:
+            name: area
+            type: Float
+            description: A value that equals the "area" key from function `calcuateArea` from `Circle` object
+
+    Function:
+        name: getSquareArea
+        description: Returns the area of a square of a given radius
+
+        FunctionArgument:
+            name: length
+            type: Float
+            is_required: true
+            description: Value to calcuate square area from, passed to "length" argument to function `calcuateArea` in `Square` object
+
+        NonStandardReturnKey:
+            name: area
+            type: Float
+            description: A value that equals the "area" key from function `calcuateArea` from `Square` object
+
+    Function:
+        name: getRectangleArea
+        description: Returns the area of a rectangle of a given radius
+
+        FunctionArgument:
+            name: width
+            type: Float
+            is_required: true
+            description: Value to calcuate rectangle area from, passed to "width" argument to function `calcuateArea` in `Rectangle` object
+
+        FunctionArgument:
+            name: height
+            type: Float
+            is_required: true
+            description: Value to calcuate rectangle area from, passed to "height" argument to function `calcuateArea` in `Rectangle` object
+
+        NonStandardReturnKey:
+            name: area
+            type: Float
+            description: A value that equals the "area" key from function `calcuateArea` from `Rectangle` object
+
+    Function:
+        name: calcuateShapeAreasFromUserInput
+        description: Prompts user for name of the shape as a string through the CLI which is then converted to all lowercase to avoid cap-sensitivity, then prompts the user for required values to calcuate area for the users requested shape then prints area to CLI. When name of shape is "circle" -> prompts for radius, "square" -> propmts for length, "rectangle" -> prompts for width and height; if there is no match, then print an error to CLI to tell user the shape is not valid
+
