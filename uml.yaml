@@ -225,7 +225,7 @@ Class:
 
     Function:
         name: getSquareArea
-        description: Returns the area of a square of a given radius
+        description: Returns the area of a square of a given length
 
         FunctionArgument:
             name: length
@@ -240,7 +240,7 @@ Class:
 
     Function:
         name: getRectangleArea
-        description: Returns the area of a rectangle of a given radius
+        description: Returns the area of a rectangle of a given width and height
 
         FunctionArgument:
             name: width
