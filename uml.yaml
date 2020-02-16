@@ -1,46 +1,46 @@
 Class:
     name: Shape
     file_location: shapes.py
-    description: Base class for all shapes in program, base class for circle, square, and rectangle
+    description: Root class for all shapes in program, base class for circle, square, and rectangle
 
     InstanceVariable:
         name: IV_type
         type: String
-        description: Stores the name of the super class that inherits this class to identify what class it is. All lower case letters. `Circle` class sets value to "circle", `Squre` class sets value to "square", and `Rectangle` class sets value to "rectangle"
+        description: Stores the name of the leaf class that inherits this class to identify what class it is. All lower case letters. `Circle` class sets value to "circle", `Squre` class sets value to "square", and `Rectangle` class sets value to "rectangle"
 
     InstanceVariable:
         name: IV_colour
         type: String
-        description: Stores name of color as a string. Value will always be lowercase and the only valid colours are, Red -> "red", Green -> "green", Blue -> "blue". This value behaves the same with all super classes
+        description: Stores name of color as a string. Value will always be lowercase and the only valid colours are, Red -> "red", Green -> "green", Blue -> "blue". This value behaves the same with all leaf classes
 
     InstanceVariable:
         name: IV_size
         type: Dictionary
-        description: Stores sizes of the super shape class. It is a dictionary with keys relating to the super class. Such as "radius" for `Circle` class, "length" for `Square` class, and "width" and "height" for `Rectangle` class
+        description: Stores sizes of the leaf shape class. It is a dictionary with keys relating to the leaf class. Such as "radius" for `Circle` class, "length" for `Square` class, and "width" and "height" for `Rectangle` class. Used in function `calculateArea` in leaf classes
     
         DictionaryKeyOrListIndex:
             name: radius
             type: Float
-            description: Only present when `Circle` is the super class. Used in the `Circle` class to calcuate its area
+            description: Only present when `Circle` is the leaf class. Used in the `Circle` class to calcuate its area
 
         DictionaryKeyOrListIndex:
             name: length
             type: Float
-            description: Only present when `Square` is the super class. Used in the `Square` class to calcuate its area
+            description: Only present when `Square` is the leaf class. Used in the `Square` class to calcuate its area
         
         DictionaryKeyOrListIndex:
             name: width
             type: Float
-            description: Only present when `Rectangle` is the super class. Used in the `Square` class with "height" key to calcuate its area
+            description: Only present when `Rectangle` is the leaf class. Used in the `Square` class with "height" key to calcuate its area
 
         DictionaryKeyOrListIndex:
             name: height
             type: Float
-            description: Only present when `Rectangle` is the super class. Used in the `Rectangle` class with "width" key to calcuate its area
+            description: Only present when `Rectangle` is the leaf class. Used in the `Rectangle` class with "width" key to calcuate its area
 
     Function:
         name: setColour
-        description: Sets IV_colour of the shape and any super classes. Behaves the same throughout every super class
+        description: Sets IV_colour of the shape and any leaf classes. Behaves the same throughout every leaf class
 
         FunctionArgument:
             name: colour
@@ -50,7 +50,7 @@ Class:
 
     Function:
         name: getColour
-        description: Returns IV_colour of the shape. Behaves the same throughout every super class
+        description: Returns IV_colour of the shape. Behaves the same throughout every leaf class
 
         NonStandardReturnKey:
             name: colour
@@ -59,7 +59,7 @@ Class:
 
     Function:
         name: setShapeType
-        description: Sets IV_type of the shape. Behaves the same throughout every super class
+        description: Sets IV_type of the shape. Behaves the same throughout every leaf class
 
         FunctionArgument:
             name: shape_type
@@ -69,7 +69,7 @@ Class:
 
     Function:
         name: getShapeType
-        description: Returns IV_type of the shape. Behaves the same throughout every super class
+        description: Returns IV_type of the shape. Behaves the same throughout every leaf class
 
         NonStandardReturnKey:
             name: type
@@ -79,7 +79,7 @@ Class:
 
     Function:
         name: calcuateArea
-        description: This method must be overwritten in super classes. Otherwise this function will fail and return an error stating that this function has not been overwritten
+        description: This method must be overwritten in leaf classes. Otherwise this function will fail and return an error stating that this function has not been overwritten
 
 
 Class:
@@ -90,7 +90,7 @@ Class:
 
     Function:
         name: setRadius
-        description: Sets "radius" key in IV_size to input value, affects result of function `calcuateArea`
+        description: Sets "radius" key in IV_size to input value
 
         FunctionArgument:
             name: radius
@@ -124,7 +124,7 @@ Class:
 
     Function:
         name: setLength
-        description: Sets "length" key in IV_size to input value, affects result of function `calcuateArea`
+        description: Sets "length" key in IV_size to input value
 
         FunctionArgument:
             name: length
@@ -158,7 +158,7 @@ Class:
 
     Function:
         name: setWidth
-        description: Sets "width" key in IV_size to input value, affects result of function `calcuateArea`
+        description: Sets "width" key in IV_size to input value
 
         FunctionArgument:
             name: width
@@ -177,7 +177,7 @@ Class:
 
     Function:
         name: setHeight
-        description: Sets "height" key in IV_size to input value, affects result of function `calcuateArea`
+        description: Sets "height" key in IV_size to input value
 
         FunctionArgument:
             name: height
@@ -206,7 +206,7 @@ Class:
 Class:
     name: ShapeManager
     file_location: shapes.py
-    description: A wrapper class to manage all super classes based on the `Shape` class, `Circle`, `Square`, and `Rectangle` classes
+    description: A wrapper class to manage all leaf classes based on the `Shape` class, `Circle`, `Square`, and `Rectangle` classes
 
     Function:
         name: getCircleArea
@@ -216,7 +216,7 @@ Class:
             name: radius
             type: Float
             is_required: true
-            description: Value to calcuate circle area from, passed to "radius" argument to function `calcuateArea` in `Circle` object
+            description: Value to calcuate circle area from, passed to "radius" argument to function `setRadius` in `Circle` object
 
         NonStandardReturnKey:
             name: area
@@ -231,7 +231,7 @@ Class:
             name: length
             type: Float
             is_required: true
-            description: Value to calcuate square area from, passed to "length" argument to function `calcuateArea` in `Square` object
+            description: Value to calcuate square area from, passed to "length" argument to function `setLength` in `Square` object
 
         NonStandardReturnKey:
             name: area
@@ -246,13 +246,13 @@ Class:
             name: width
             type: Float
             is_required: true
-            description: Value to calcuate rectangle area from, passed to "width" argument to function `calcuateArea` in `Rectangle` object
+            description: Value to calcuate rectangle area from, passed to "width" argument to function `setWidth` in `Rectangle` object
 
         FunctionArgument:
             name: height
             type: Float
             is_required: true
-            description: Value to calcuate rectangle area from, passed to "height" argument to function `calcuateArea` in `Rectangle` object
+            description: Value to calcuate rectangle area from, passed to "height" argument to function `setHeight` in `Rectangle` object
 
         NonStandardReturnKey:
             name: area
@@ -261,5 +261,31 @@ Class:
 
     Function:
         name: calcuateShapeAreasFromUserInput
-        description: Prompts user for name of the shape as a string through the CLI which is then converted to all lowercase to avoid cap-sensitivity, then prompts the user for required values to calcuate area for the users requested shape then prints area to CLI. When name of shape is "circle" -> prompts for radius, "square" -> propmts for length, "rectangle" -> prompts for width and height; if there is no match, then print an error to CLI to tell user the shape is not valid
+        description: Prompts user for name of the shape as a string through the CLI which is then converted to all lowercase to avoid cap-sensitivity, then prompts the user for required values to calcuate area for the users requested shape then prints area to CLI
+
+        CommandPrompt:
+            UserInput:
+                value: "circle"
+                description: sets value IV_type
+
+                Behaviour:
+                    description: Prompts for radius and sets IV_size["radius"] to that value
+            
+            UserInput:
+                value: "square"
+                description: sets value IV_type
+
+                Behaviour:
+                    description: Prompts for length and sets IV_size["length"] to that value
+
+            UserInput:
+                value: "rectangle"
+                description: sets value IV_type
+
+                Behaviour:
+                    description: Prompts for width and height and sets IV_size["width"] and IV_size["height"] to that value
+
+            UserInput:
+                value: invalid
+                description: "unmatched input, return error to CLI"
 
