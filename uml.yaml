@@ -286,6 +286,10 @@ Class:
                     description: Prompts for width and height and sets IV_size["width"] and IV_size["height"] to that value
 
             UserInput:
+                value: "quit" or "exit"
+                description: exits function with success
+
+            UserInput:
                 value: invalid
                 description: "unmatched input, return error to CLI"
 

@@ -99,7 +99,7 @@ class Shape:
 class Circle(Shape):
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.IV_type = "circle"
         self.IV_size["radius"] = 1
 
@@ -140,7 +140,7 @@ class Circle(Shape):
 class Square(Shape):
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.IV_type = "square"
         self.IV_size["length"] = 1
     
@@ -154,7 +154,7 @@ class Square(Shape):
         if type(length) is not float:
             return_msg += "input length is not of type `float`"
         else:
-            self.IV_size["radius"] = length
+            self.IV_size["length"] = length
             success = RC.success
             return_msg += "length successfully set to %f" % length
 
@@ -181,7 +181,7 @@ class Square(Shape):
 class Rectangle(Shape):
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.IV_type = "rectangle"
         self.IV_size["width"] = 1
         self.IV_size["height"] = 1
@@ -361,48 +361,160 @@ class ShapeManager:
         debug_data = []
         success = RC.failed
 
-        ## input gathering and validation
-
         shape = None
 
-        shape_type = input("Enter the type of shape: ")
+        ## input gathering and validation
+
+        shape_type = input("Enter the type of shape or \"exit\" to exit: ")
         if shape_type == "circle":
             shape = Circle()
             return_msg += "shape type circle"
-            success = RC.success
+
+            radius = float(input("Enter radius of circle: "))
+
+            set_radius_result = shape.setRadius(radius)
+
+            success = set_radius_result[RDK.success]
+
+            return_msg += "\n" + set_radius_result[RDK.return_msg]
 
         elif shape_type == "square":
             shape = Square()
             return_msg += "shape type square"
-            success = RC.success
+
+            length = float(input("Enter length of square: "))
+
+            set_length_result = shape.setLength(length)
+            
+            success = set_length_result[RDK.success]
+
+            return_msg += "\n" + set_length_result[RDK.return_msg]
 
         elif shape_type == "rectangle":
             shape = Rectangle()
             return_msg += "shape type rectangle"
-            success = RC.success
+
+            width = float(input("Enter width of rectangle: "))
+            height = float(input("Enter height of rectangle: "))
+
+            set_width_result = shape.setWidth(width)
+            set_height_result = shape.setHeight(height)
+
+            success = set_width_result[RDK.success] and set_height_result[RDK.success]
+
+            return_msg += "\n" + set_width_result[RDK.return_msg] + "\n" + set_height_result[RDK.return_msg]
+
+        elif shape_type in ("quit", "exit"):
+            return_msg += "user exited function"
+            return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         else:
-            return_msg += "shape type invalid"
-
-            ## shape specific input and validation
-
-        if success:
-            success = RC.failed
-
-            if type(shape) is Circle:
-                pass
-            
-            elif type(shape) is Square:
-                pass
-
-            elif type(shape) is Rectangle:
-                pass
-            
-            else:
-                return_msg += "unreachable error"
-
-            ##</end> shape specific input and validation
+            return_msg += "shape type \"%s\"" % shape_type
+            print("\"%s\" is not a valid shape" % shape_type)
 
         ##</end> input gathering
 
+        ## area calculation
+
+        if success:
+            calculate_area_result = shape.calculateArea()
+
+            success = calculate_area_result[RDK.success]
+
+            return_msg += "\n" + calculate_area_result[RDK.return_msg]
+
+            area = calculate_area_result["area"]
+
+            print("Area of %s is %g" % (str(shape.getShapeType()["type"]), area))
+
+        ##</end> area calculation
+
         return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+
+## tests
+
+def test_circle():
+    circle = Circle()
+
+    assert circle.setRadius(1.0)[RDK.success]
+    area = circle.calculateArea()["area"]
+    assert math.isclose(area, math.pi)
+
+    assert circle.setRadius(4.0)[RDK.success]
+    area = circle.calculateArea()["area"]
+    assert math.isclose(area, 50.26548245743668985596741549670696258544921875)
+
+    assert circle.setRadius(14.0)[RDK.success]
+    area = circle.calculateArea()["area"]
+    assert math.isclose(area, 615.752160103599408103036694228649139404296875)
+
+    assert circle.setRadius(48.0)[RDK.success]
+    area = circle.calculateArea()["area"]
+    assert math.isclose(area, 7238.2294738708833392593078315258026123046875)
+
+def test_square():
+    square = Square()
+
+    assert square.setLength(1.0)[RDK.success]
+    area = square.calculateArea()["area"]
+    assert math.isclose(area, 1.0)
+
+    assert square.setLength(4.0)[RDK.success]
+    area = square.calculateArea()["area"]
+    assert math.isclose(area, 16.0)
+
+    assert square.setLength(14.0)[RDK.success]
+    area = square.calculateArea()["area"]
+    assert math.isclose(area, 196.0)
+
+    assert square.setLength(48.0)[RDK.success]
+    area = square.calculateArea()["area"]
+    assert math.isclose(area, 2304.0)
+
+def test_rectangle():
+    rectangle = Rectangle()
+
+    assert rectangle.setWidth(1.0)[RDK.success]
+    assert rectangle.setHeight(1.0)[RDK.success]
+    area = rectangle.calculateArea()["area"]
+    assert math.isclose(area, 1.0)
+
+    assert rectangle.setWidth(4.0)[RDK.success]
+    assert rectangle.setHeight(14.0)[RDK.success]
+    area = rectangle.calculateArea()["area"]
+    assert math.isclose(area, 56.0)
+
+    assert rectangle.setWidth(14.0)[RDK.success]
+    assert rectangle.setHeight(4.0)[RDK.success]
+    area = rectangle.calculateArea()["area"]
+    assert math.isclose(area, 56.0)
+
+    assert rectangle.setWidth(48.0)[RDK.success]
+    assert rectangle.setHeight(14.0)[RDK.success]
+    area = rectangle.calculateArea()["area"]
+    assert math.isclose(area, 672.0)
+
+    assert rectangle.setWidth(14.0)[RDK.success]
+    assert rectangle.setHeight(48.0)[RDK.success]
+    area = rectangle.calculateArea()["area"]
+    assert math.isclose(area, 672.0)
+
+def test():
+    test_circle()
+    test_square()
+    test_rectangle()
+
+##</end> tests
+
+## main program
+if __name__ == "__main__":
+    test()
+    manager = ShapeManager()
+    loop = True
+    while loop:
+        user_result = manager.calcuateShapeAreasFromUserInput()
+        if "exited" in user_result[RDK.return_msg]:
+            print("Exiting...")
+            loop = False
+
+##</end> main program
