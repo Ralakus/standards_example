@@ -81,6 +81,12 @@ Class:
         name: calcuateArea
         description: This method must be overwritten in leaf classes. Otherwise this function will fail and return an error stating that this function has not been overwritten
 
+        NonStandardReturnKey:
+            name: area
+            type: Float
+            is_required: true
+            description: Will always be zero (0) when not overwritten
+
 
 Class:
     name: Circle

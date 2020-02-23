@@ -10,6 +10,7 @@ class RC:
     failed = False
     success = True
     input_validation = 1001
+    non_overwritten_virtual = 2002
 
 
 def log_exception(function_name=None, action_description=None, exception_object=None):
@@ -36,65 +37,63 @@ class Shape:
     def setColour(self, colour):
         return_msg = "Shape:setColour: "
         debug_data = []
-        success = RC.failed
 
         ## input validation
-
+        
         if type(colour) is not str:
-            return_msg += "input colour is not of type `str`"
-        elif colour not in ("red", "green", "blue"):
-            return_msg += "input colour \"%s\"is not valid colour" % colour
-        else:
-            self.IV_colour = colour
-            return_msg += "colour successfully set to %s" % colour
-            success = RC.success
+            return_msg += "input colour is not of type `str` its {}".format(type(colour))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+
+        if colour not in ("red", "green", "blue"):
+            return_msg += "input colour \"{}\"is not valid colour".format(colour)
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         ##</end> input validation
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+        self.IV_colour = colour
+
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
     def getColour(self):
         return_msg = "Shape:getColour: "
         debug_data = []
-        success = RC.success
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "colour": self.IV_colour}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "colour": self.IV_colour}
 
     def setShapeType(self, shape_type):
         return_msg = "Shape:setShapeType: "
         debug_data = []
-        success = RC.failed
 
         ## input validation
 
         if type(shape_type) is not str:
-            return_msg += "input colour is not of type `str`"
-        elif shape_type not in ("circle", "square", "rectangle"):
-            return_msg += "input shape \"%s\"is not valid shape" % shape_type
-        else:
-            self.IV_type = shape_type
-            success = RC.success
-            return_msg += "shape successfully set to %s" % shape_type
+            return_msg += "input colour is not of type `str`; is type {}".format(type(shape_type))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+
+        if shape_type not in ("circle", "square", "rectangle"):
+            return_msg += "input shape \"{}\"is not valid shape".format(shape_type)
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         ##</end> input validation
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+        self.IV_type = shape_type
+
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
     
     def getShapeType(self):
         return_msg = "Shape:getShapeType: "
         debug_data = []
-        success = RC.success
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "type": self.IV_type}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "type": self.IV_type}
 
     def calculateArea(self):
         return_msg = "Shape:calculateArea: "
         debug_data = []
-        success = RC.failed
+        area = 0
 
         return_msg += "function not overwritten by leaf class"
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+        return {RDK.success: RC.non_overwritten_virtual, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
 class Circle(Shape):
 
@@ -106,36 +105,33 @@ class Circle(Shape):
     def setRadius(self, radius):
         return_msg = "Circle:setRadius: "
         debug_data = []
-        success = RC.failed
 
         ## input validation
 
         if type(radius) is not float:
-            return_msg += "input radius is not of type `float`"
-        else:
-            self.IV_size["radius"] = radius
-            success = RC.success
-            return_msg += "radius successfully set to %f" % radius
+            return_msg += "input radius is not of type `float`; is type {}".format(type(radius))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         ##</end> input validation
+        
+        self.IV_size["radius"] = radius
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
     
     def getRadius(self):
         return_msg = "Circle:getRadius: "
         debug_data = []
-        success = RC.success
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "radius": self.IV_size["radius"]}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "radius": self.IV_size["radius"]}
 
     def calculateArea(self):
         return_msg = "Circle:calculateArea: "
         debug_data = []
-        success = RC.success
+        area = 0
 
         area = math.pi * self.IV_size["radius"] ** 2
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
 class Square(Shape):
 
@@ -147,36 +143,33 @@ class Square(Shape):
     def setLength(self, length):
         return_msg = "Square:setLength: "
         debug_data = []
-        success = RC.failed
 
         ## input validation
 
         if type(length) is not float:
-            return_msg += "input length is not of type `float`"
-        else:
-            self.IV_size["length"] = length
-            success = RC.success
-            return_msg += "length successfully set to %f" % length
+            return_msg += "input length is not of type `float`; is type {}".format(type(length))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         ##</end> input validation
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+        self.IV_size["length"] = length
+
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
     def getLength(self):
         return_msg = "Square:getLength: "
         debug_data = []
-        success = RC.success
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "length": self.IV_size["length"]}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "length": self.IV_size["length"]}
 
     def calculateArea(self):
         return_msg = "Square:calculateArea: "
         debug_data = []
-        success = RC.success
+        area = 0
 
         area = self.IV_size["length"] ** 2
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
 class Rectangle(Shape):
 
@@ -189,177 +182,169 @@ class Rectangle(Shape):
     def setWidth(self, width):
         return_msg = "Rectangle:calculateArea: "
         debug_data = []
-        success = RC.failed
 
         ## input validation
 
         if type(width) is not float:
-            return_msg += "input width is not of type `float`"
-        else:
-            self.IV_size["width"] = width
-            success = RC.success
-            return_msg += "width successfully set to %f" % width
+            return_msg += "input width is not of type `float`; is type {}".format(type(width))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         ##</end> input validation
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+        self.IV_size["width"] = width
+
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
     def getWidth(self):
         return_msg = "Rectangle:getWidth: "
         debug_data = []
-        success = RC.success
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "width": self.IV_size["width"]}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "width": self.IV_size["width"]}
 
     def setHeight(self, height):
         return_msg = "Rectangle:setHeight: "
         debug_data = []
-        success = RC.failed
 
         ## input validation
 
         if type(height) is not float:
-            return_msg += "input height is not of type `float`"
-        else:
-            self.IV_size["height"] = height
-            success = RC.success
-            return_msg += "height successfully set to %f" % height
+            return_msg += "input height is not of type `float`; is type {}".format(type(height))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         ##</end> input validation
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+        self.IV_size["height"] = height
+
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
     def getHeight(self):
         return_msg = "Rectangle:getHeight: "
         debug_data = []
-        success = RC.success
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "height": self.IV_size["height"]}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "height": self.IV_size["height"]}
 
     def calculateArea(self):
         return_msg = "Rectangle:calculateArea: "
         debug_data = []
-        success = RC.success
+        area = 0
 
         area = self.IV_size["width"] * self.IV_size["height"]
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
 class ShapeManager:
 
     def getCircleArea(self, radius):
         return_msg = "ShapeManager:getCircleArea: "
         debug_data = []
-        success = RC.failed
+        call_result = {}
+        area = 0
 
         ## input validation
 
         if type(radius) is not float:
-            return_msg += "input radius is not of type `float`"
-        else:
-            success = RC.success
-            return_msg += "radius successfully validated"
+            return_msg += "input radius is not of type `float`; is type {}".format(type(radius))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
         ##</end> input validation
 
-        ## circle creation and validation
+        ## circle creation
 
         circle = Circle()
-        set_radius_result = circle.setRadius(radius)
+        call_result = circle.setRadius(radius)
+        debug_data.append(call_result)
 
-        calculate_area_result = circle.calculateArea()
+        call_result = circle.calculateArea()
+        debug_data.append(call_result)
 
-            ## return_msg passthrough
+        for entry in debug_data:
+            if entry[RDK.success] is not RC.success:
+                return {RDK.success: entry[RDK.success], RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
-        return_msg += "\n" + set_radius_result[RDK.return_msg] + "\n" + calculate_area_result[RDK.return_msg]
+        ##</end> circle creation
 
-            ##</end> return_msg passthrough
+        area = call_result["area"]
 
-        success = success and set_radius_result[RDK.success] and calculate_area_result[RDK.success]
-
-        ##</end>
-
-        area = calculate_area_result["area"]
-
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
     def getSquareArea(self, length):
         return_msg = "ShapeManager:getSquareArea: "
         debug_data = []
-        success = RC.failed
+        call_result = {}
+        area = 0
 
         ## input validation
 
         if type(length) is not float:
-            return_msg += "input length is not of type `float`"
-        else:
-            success = RC.success
-            return_msg += "length successfully validated"
+            return_msg += "input length is not of type `float`; is type {}".format(type(length))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
         ##</end> input validation
 
-        ## square creation and valdiation
+        ## square creation
 
         square = Square()
-        set_length_result = square.setLength(length)
+        call_result = square.setLength(length)
+        debug_data.append(call_result)
 
-        calculate_area_result = square.calculateArea()
+        call_result = square.calculateArea()
+        debug_data.append(call_result)
 
-            ## return_msg passthrough
+        for entry in debug_data:
+            if entry[RDK.success] is not RC.success:
+                return {RDK.success: entry[RDK.success], RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
-        return_msg += "\n" + set_length_result[RDK.return_msg] + "\n" + calculate_area_result[RDK.return_msg]
+        ##</end> square creation
 
-            ##</end> return_msg passthrough
+        area = call_result["area"]
 
-        success = success and set_length_result[RDK.success] and calculate_area_result[RDK.success]
-
-        ##</end> square creation and validation
-
-        area = calculate_area_result["area"]
-
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
     def getRectangleArea(self, width, height):
         return_msg = "ShapeManager:getRectangleArea: "
         debug_data = []
-        success = RC.failed
+        call_result = {}
+        area = 0
 
         ## input validation
 
         if type(width) is not float:
-            return_msg += "input width is not of type `float`"
-        else:
-            success = RC.success
-            return_msg += "width successfully validated"
+            return_msg += "input width is not of type `float`; is type {}".format(type(width))
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
         ##</end> input validation
 
-        ## rectangle creation and validation
+        ## rectangle creation
 
         rectangle = Rectangle()
-        set_width_result = rectangle.setWidth(width)
-        set_height_result = rectangle.setHeight(height)
+        call_result = rectangle.setWidth(width)
+        debug_data.append(call_result)
+        
+        call_result = rectangle.setHeight(height)
+        debug_data.append(call_result)
 
-        calculate_area_result = rectangle.calculateArea()
+        call_result = rectangle.calculateArea()
+        debug_data.append(call_result)
 
-            ## return_msg passthrough
+        for entry in debug_data:
+            if entry[RDK.success] is not RC.success:
+                return {RDK.success: entry[RDK.success], RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
-        return_msg += "\n" + set_width_result[RDK.return_msg] + "\n" + set_height_result[RDK.return_msg] + "\n" + calculate_area_result[RDK.return_msg]
+        ##</end> rectangle creation
 
-            ##</end> return_msg passthrough
+        area = call_result["area"]
 
-        success = success and set_width_result[RDK.success] and set_height_result[RDK.success] and calculate_area_result[RDK.success]
-
-        ##</end> rectangle creation and validation
-
-        area = calculate_area_result["area"]
-
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data, "area": area}
 
     def calcuateShapeAreasFromUserInput(self):
         return_msg = "ShapeManager:calcuateShapeAreasFromUserInput: "
         debug_data = []
-        success = RC.failed
+        call_result = {}
+        radius = 0
+        length = 0
+        width = 0
+        height = 0
+        area = 0
 
         shape = None
 
@@ -368,27 +353,26 @@ class ShapeManager:
         shape_type = input("Enter the type of shape or \"exit\" to exit: ")
         if shape_type == "circle":
             shape = Circle()
-            return_msg += "shape type circle"
 
             radius = float(input("Enter radius of circle: "))
 
-            set_radius_result = shape.setRadius(radius)
+            call_result = shape.setRadius(radius)
+            debug_data.append(call_result)
 
-            success = set_radius_result[RDK.success]
-
-            return_msg += "\n" + set_radius_result[RDK.return_msg]
+            if call_result[RDK.success] is not RC.success:
+                return {RDK.success: call_result[RDK.success], RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         elif shape_type == "square":
             shape = Square()
-            return_msg += "shape type square"
 
             length = float(input("Enter length of square: "))
 
-            set_length_result = shape.setLength(length)
-            
-            success = set_length_result[RDK.success]
+            call_result = shape.setLength(length)
+            debug_data.append(call_result)
 
-            return_msg += "\n" + set_length_result[RDK.return_msg]
+            if call_result[RDK.success] is not RC.success:
+                return {RDK.success: call_result[RDK.success], RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+
 
         elif shape_type == "rectangle":
             shape = Rectangle()
@@ -397,39 +381,44 @@ class ShapeManager:
             width = float(input("Enter width of rectangle: "))
             height = float(input("Enter height of rectangle: "))
 
-            set_width_result = shape.setWidth(width)
-            set_height_result = shape.setHeight(height)
+            call_result = shape.setWidth(width)
+            debug_data.append(call_result)
 
-            success = set_width_result[RDK.success] and set_height_result[RDK.success]
+            call_result = shape.setHeight(height)
+            debug_data.append(call_result)
 
-            return_msg += "\n" + set_width_result[RDK.return_msg] + "\n" + set_height_result[RDK.return_msg]
+            for entry in debug_data:
+                if entry[RDK.success] is not RC.success:
+                    return {RDK.success: entry[RDK.success], RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         elif shape_type in ("quit", "exit"):
             return_msg += "user exited function"
             return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         else:
-            return_msg += "shape type \"%s\"" % shape_type
-            print("\"%s\" is not a valid shape" % shape_type)
+            return_msg += "invalid shape type \"{}\"".format(shape_type)
+            print("\"{}\" is not a valid shape".format(shape_type))
+
+            return {RDK.success: RC.input_validation, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
         ##</end> input gathering
 
         ## area calculation
 
-        if success:
-            calculate_area_result = shape.calculateArea()
+        call_result = shape.calculateArea()
+        debug_data.append(call_result)
 
-            success = calculate_area_result[RDK.success]
+        for entry in debug_data:
+                if entry[RDK.success] is not RC.success:
+                    return {RDK.success: entry[RDK.success], RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
-            return_msg += "\n" + calculate_area_result[RDK.return_msg]
+        area = call_result["area"]
 
-            area = calculate_area_result["area"]
-
-            print("Area of %s is %g" % (str(shape.getShapeType()["type"]), area))
+        print("Area of %s is %g" % (str(shape.getShapeType()["type"]), area))
 
         ##</end> area calculation
 
-        return {RDK.success: success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
+        return {RDK.success: RC.success, RDK.return_msg: return_msg, RDK.debug_data: debug_data}
 
 ## tests
 
